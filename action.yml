@@ -1,0 +1,14 @@
+name: "JSON Linter Action"
+description: "Linter to JSON files"
+inputs:
+  json_path:
+    description: "Relative path to JSON file"
+    required: true
+outputs:
+  isValid:
+    description: "true or false to json with valid formmatation"
+  erros:
+    description: output errors whhen json is not valid
+runs:
+  using: "node16"
+  main: "index.js"
