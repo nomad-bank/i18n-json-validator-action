@@ -1,7 +1,6 @@
-import * as core from "@actions/core";
-import fs from "fs";
-import {} from "@actions/github";
-import { Validators } from "./validators";
+const fs = require("fs");
+const core = require("@actions/core");
+const { Validators } = require("./validators");
 
 try {
   const filePath = core.getInput("json_path");
