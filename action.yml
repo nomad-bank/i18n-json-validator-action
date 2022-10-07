@@ -9,6 +9,9 @@ outputs:
     description: "true or false to json with valid formmatation"
   erros:
     description: output errors whhen json is not valid
+branding:
+  icon: message-circle
+  color: purple
 runs:
   using: "node16"
-  main: "index.js"
+  main: "dist/index.js"

@@ -1,14 +1,18 @@
 const fs = require("fs");
+const path = require("path");
 const core = require("@actions/core");
+const github = require("@actions/github");
 const { Validators } = require("./validators");
 
 try {
   const filePath = core.getInput("json_path");
-  const file = fs.readFileSync(filePath, "utf8");
+
+  const file = fs.readFileSync(path.join(__dirname, filePath), "utf8");
 
   try {
     const { isValid, error } = Validators.validateJSONFormat(file);
     core.setOutput("isValid", isValid);
+    console.log(JSON.stringify(github.context.payload, undefined, 2));
     if (!isValid) {
       core.setOutput("errors", error);
     }
@@ -17,5 +21,6 @@ try {
     core.setOutput("errors", error.message);
   }
 } catch (error) {
+  console.log("error");
   core.setFailed(error.message);
 }
