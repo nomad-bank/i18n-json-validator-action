@@ -29,7 +29,7 @@ jobs:
     steps:
       - name: Validate JSON step
         id: validate
-        uses: nomad-bank/i18n-json-validator-action@v1.1
+        uses: nomad-bank/i18n-json-validator-action@v0.1.2
         with:
           json_path: "/relative/path/to/file.json"
       - name: Get the output isValid

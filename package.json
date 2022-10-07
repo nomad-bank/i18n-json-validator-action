@@ -1,13 +1,13 @@
 {
-  "name": "json-linter-action",
-  "version": "1.0.0",
+  "name": "i18n-json-validator-action",
+  "version": "0.1.2",
   "description": "",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
-  "author": "",
+  "author": "Nomad Bank",
   "license": "ISC",
   "dependencies": {
     "@actions/core": "^1.10.0",
