@@ -1,6 +1,4 @@
-import { ValidatorResponse } from "./types";
-
-const validateJSONFormat = (data: any): ValidatorResponse => {
+const validateJSONFormat = (data) => {
   try {
     const json = JSON.parse(data);
     console.log(json);
