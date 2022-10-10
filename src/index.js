@@ -1,5 +1,4 @@
 const fs = require("fs");
-const path = require("path");
 const core = require("@actions/core");
 const github = require("@actions/github");
 const { Validators } = require("./validators");
@@ -7,7 +6,7 @@ const { Validators } = require("./validators");
 try {
   const filePath = core.getInput("json_path");
 
-  const file = fs.readFileSync(path.join(__dirname, filePath), "utf8");
+  const file = fs.readFileSync(filePath, "utf8");
 
   try {
     const { isValid, error } = Validators.validateJSONFormat(file);
