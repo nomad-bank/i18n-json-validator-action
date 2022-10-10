@@ -8,10 +8,6 @@ const validateJSONFormat = (data) => {
   }
 };
 
-const Validators = {
+export const Validators = {
   validateJSONFormat,
-};
-
-module.exports = {
-  Validators,
 };

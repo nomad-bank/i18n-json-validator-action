@@ -40,7 +40,7 @@ module.exports =
 /******/ 	// the startup function
 /******/ 	function startup() {
 /******/ 		// Load entry module and return exports
-/******/ 		return __webpack_require__(676);
+/******/ 		return __webpack_require__(526);
 /******/ 	};
 /******/
 /******/ 	// run startup
@@ -1259,6 +1259,30 @@ class Context {
 }
 exports.Context = Context;
 //# sourceMappingURL=context.js.map
+
+/***/ }),
+
+/***/ 271:
+/***/ (function(__unusedmodule, exports) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.Validators = void 0;
+const validateJSONFormat = (data) => {
+    try {
+        const json = JSON.parse(data);
+        console.log(json);
+        return { isValid: true };
+    }
+    catch (error) {
+        return { isValid: false, error };
+    }
+};
+exports.Validators = {
+    validateJSONFormat,
+};
+
 
 /***/ }),
 
@@ -5143,6 +5167,52 @@ Object.defineProperty(exports, "toPlatformPath", { enumerable: true, get: functi
 
 /***/ }),
 
+/***/ 478:
+/***/ (function(__unusedmodule, exports, __webpack_require__) {
+
+"use strict";
+
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.getConfig = void 0;
+const core = __importStar(__webpack_require__(470));
+const ConfigKey = {
+    SOURCEDIR: "GITHUB_WORKSPACE",
+    JSON: "json_path",
+};
+async function getConfig() {
+    return {
+        SOURCEDIR: process.env[ConfigKey.SOURCEDIR],
+        JSON: core.getInput(ConfigKey.JSON),
+    };
+}
+exports.getConfig = getConfig;
+
+
+/***/ }),
+
 /***/ 498:
 /***/ (function(__unusedmodule, exports, __webpack_require__) {
 
@@ -5355,6 +5425,70 @@ module.exports.Collection = Hook.Collection;
 
 /***/ }),
 
+/***/ 526:
+/***/ (function(__unusedmodule, exports, __webpack_require__) {
+
+"use strict";
+
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const core = __importStar(__webpack_require__(470));
+const github = __importStar(__webpack_require__(469));
+const validators_1 = __webpack_require__(271);
+const config_1 = __webpack_require__(478);
+const fs_1 = __importDefault(__webpack_require__(747));
+async function run() {
+    try {
+        const config = await (0, config_1.getConfig)();
+        const file = await fs_1.default.promises.readFile(config.JSON, "utf8");
+        try {
+            const { isValid, error } = validators_1.Validators.validateJSONFormat(file);
+            core.setOutput("isValid", isValid);
+            console.log(JSON.stringify(github.context.payload, undefined, 2));
+            if (!isValid) {
+                core.setOutput("errors", error);
+            }
+        }
+        catch (error) {
+            core.setOutput("isValid", false);
+            core.setOutput("errors", error);
+        }
+    }
+    catch (error) {
+        console.log("error");
+        core.setFailed(error);
+    }
+}
+run();
+
+
+/***/ }),
+
 /***/ 530:
 /***/ (function(module, __unusedexports, __webpack_require__) {
 
@@ -5552,30 +5686,6 @@ module.exports.toUnicode = function(domain_name, useSTD3) {
 };
 
 module.exports.PROCESSING_OPTIONS = PROCESSING_OPTIONS;
-
-
-/***/ }),
-
-/***/ 550:
-/***/ (function(module) {
-
-const validateJSONFormat = (data) => {
-  try {
-    const json = JSON.parse(data);
-    console.log(json);
-    return { isValid: true };
-  } catch (error) {
-    return { isValid: false, error };
-  }
-};
-
-const Validators = {
-  validateJSONFormat,
-};
-
-module.exports = {
-  Validators,
-};
 
 
 /***/ }),
@@ -6055,39 +6165,6 @@ exports.summary = _summary;
 /***/ (function(module) {
 
 module.exports = require("util");
-
-/***/ }),
-
-/***/ 676:
-/***/ (function(__unusedmodule, __unusedexports, __webpack_require__) {
-
-const fs = __webpack_require__(747);
-const path = __webpack_require__(622);
-const core = __webpack_require__(470);
-const github = __webpack_require__(469);
-const { Validators } = __webpack_require__(550);
-
-try {
-  const filePath = core.getInput("json_path");
-
-  const file = fs.readFileSync(path.join(__dirname, filePath), "utf8");
-
-  try {
-    const { isValid, error } = Validators.validateJSONFormat(file);
-    core.setOutput("isValid", isValid);
-    console.log(JSON.stringify(github.context.payload, undefined, 2));
-    if (!isValid) {
-      core.setOutput("errors", error);
-    }
-  } catch (error) {
-    core.setOutput("isValid", false);
-    core.setOutput("errors", error.message);
-  }
-} catch (error) {
-  console.log("error");
-  core.setFailed(error.message);
-}
-
 
 /***/ }),
 
